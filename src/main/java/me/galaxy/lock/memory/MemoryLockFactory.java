@@ -1,5 +1,10 @@
-package me.galaxy.lock;
+package me.galaxy.lock.memory;
 
+
+import me.galaxy.lock.Cache;
+import me.galaxy.lock.FactoryType;
+import me.galaxy.lock.GenericLock;
+import me.galaxy.lock.LockFactory;
 
 /**
  * @description: TODO

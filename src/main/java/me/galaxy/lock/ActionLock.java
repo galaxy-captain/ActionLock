@@ -1,5 +1,7 @@
 package me.galaxy.lock;
 
+import me.galaxy.lock.redis.RedisLockFactory;
+
 /**
  * @description: TODO
  * @author: Galaxy
@@ -28,6 +30,8 @@ public class ActionLock {
 
     private ActionLock() {
         configurationHolder = new ConfigurationHolder();
+        configurationHolder.setFactoryType(FactoryType.REDIS);
+
         factory = configurationHolder.createFactory();
     }
 
@@ -35,12 +39,16 @@ public class ActionLock {
         return this.factory;
     }
 
+    public static GenericLock create(String name) {
+        return getInstance().getFactory().create(name);
+    }
+
     public static boolean lock(String name) {
-        return getInstance().getFactory().create(name).lock();
+        return false;
     }
 
     public static boolean unlock(String name) {
-        return getInstance().getFactory().create(name).freeLock();
+        return false;
     }
 
 }

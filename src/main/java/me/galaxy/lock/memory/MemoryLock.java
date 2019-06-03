@@ -1,5 +1,7 @@
-package me.galaxy.lock;
+package me.galaxy.lock.memory;
 
+import me.galaxy.lock.Cache;
+import me.galaxy.lock.GenericLock;
 import me.galaxy.lock.helper.DateHelper;
 
 /**
@@ -14,17 +16,9 @@ public class MemoryLock implements GenericLock {
      */
     private final Cache<String, Long> cache;
 
-    /**
-     *
-     */
-    private final static Long EXPIRE = 5_000L;
-
-    /**
-     *
-     */
-    private final static Long TOLERANT = 5L;
-
     private String name;
+
+    private long expireTime;
 
     private boolean isLocked = false;
 
@@ -33,20 +27,68 @@ public class MemoryLock implements GenericLock {
         this.name = name;
     }
 
+    private boolean doTryLock(long lockSeconds) {
+
+        if (isLocked) return false;
+
+        isLocked = doTryLock(this.cache, this.name, lockSeconds);
+
+        return isLocked;
+    }
+
+    private boolean doTryLock(Cache<String, Long> cache, String name, long lockSeconds) {
+
+        long nowTime = DateHelper.currentTimeMillis();
+        long expireTime = nowTime + lockSeconds + 100;
+
+        if (cache.setIfNotExist(name, expireTime)) {
+            cache.expire(name, lockSeconds);
+            return true;
+        } else {
+            Long oldValue = cache.get(name);
+            if (oldValue != null && oldValue < nowTime) {
+                Long oldValue2 = cache.getAndSet(name, expireTime);
+                if (oldValue.equals(oldValue2)) {
+                    cache.expire(name, lockSeconds);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public boolean tryLock() {
         try {
-            return doTryLock(EXPIRE);
+            return doTryLock(this.expireTime);
         } catch (Exception e) {
             return false;
         }
     }
 
     @Override
-    public boolean lock() {
+    public boolean freeLock() {
+
+        if (!isLocked) return false;
+
+        isLocked = false;
+
+        cache.remove(this.name);
+
+        return true;
+
+    }
+
+    @Override
+    public boolean lock(long expireTime, long waitTime) {
+
+        this.expireTime = expireTime;
 
         int maxTryCount = 10;
-        int tryIntervalMillis = (int) (EXPIRE * 0.8 / maxTryCount);
+        int tryIntervalMillis = (int) (waitTime * 0.95 / maxTryCount);
         int tryCount = 0;
 
         while (true) {
@@ -71,52 +113,9 @@ public class MemoryLock implements GenericLock {
 
     }
 
-    private boolean doTryLock(long lockSeconds) {
-
-        if (isLocked) return false;
-
-        isLocked = doTryLock(this.cache, this.name, lockSeconds, TOLERANT);
-
-        return isLocked;
-    }
-
-    private boolean doTryLock(Cache<String, Long> cache, String name, long lockSeconds, long tolerant) {
-
-        long nowTime = DateHelper.currentTimeMillis();
-        long expireTime = nowTime + lockSeconds + tolerant;
-
-        if (cache.setIfNotExist(name, expireTime)) {
-            cache.expire(name, lockSeconds);
-            return true;
-        } else {
-            Long oldValue = cache.get(name);
-            if (oldValue != null && oldValue < nowTime) {
-                Long oldValue2 = cache.getAndSet(name, expireTime);
-                if (oldValue.equals(oldValue2)) {
-                    cache.expire(name, lockSeconds);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        return false;
-    }
-
     @Override
-    public boolean freeLock() {
-
-        if (!isLocked) return false;
-
-        isLocked = false;
-
-        cache.remove(this.name);
-
-        System.out.println(cache.toString());
-
-        return true;
-
+    public boolean unlock() {
+        return this.freeLock();
     }
 
 }

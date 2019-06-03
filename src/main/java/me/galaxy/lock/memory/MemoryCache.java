@@ -1,4 +1,4 @@
-package me.galaxy.lock;
+package me.galaxy.lock.memory;
 
 
 import me.galaxy.lock.Cache;
