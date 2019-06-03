@@ -7,7 +7,7 @@ package me.galaxy.lock;
  **/
 public class ConfigurationHolder {
 
-    private FactoryType factoryType;
+    private FactoryType factoryType = FactoryType.MEMORY;
 
     public FactoryType getFactoryType() {
         return factoryType == null ? FactoryType.MEMORY : factoryType;

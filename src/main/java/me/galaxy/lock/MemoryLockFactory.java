@@ -1,6 +1,5 @@
 package me.galaxy.lock;
 
-import me.galaxy.lock.cache.MemoryCache;
 
 /**
  * @description: TODO
@@ -12,21 +11,33 @@ public class MemoryLockFactory implements LockFactory {
     /**
      *
      */
-    private FactoryType type;
+    private static final FactoryType TYPE = FactoryType.MEMORY;
 
     /**
      *
      */
-    private final Cache cache;
+    private final Cache<String, Long> cache;
+
+    /**
+     *
+     */
+    private final ThreadLocal<GenericLock> locks = new ThreadLocal<>();
 
     public MemoryLockFactory() {
-        this.type = FactoryType.MEMORY;
         this.cache = new MemoryCache();
-
     }
 
     public GenericLock create(String name) {
-        return null;
+
+        GenericLock lock = locks.get();
+
+        if (lock != null) return lock;
+
+        lock = new MemoryLock(this.cache, name);
+
+        locks.set(lock);
+
+        return lock;
     }
 
 }
