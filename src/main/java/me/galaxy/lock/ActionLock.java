@@ -35,12 +35,12 @@ public class ActionLock {
         return this.factory;
     }
 
-    public static void lock(String name) {
-        getInstance().getFactory().create(name).tryLock();
+    public static boolean lock(String name) {
+        return getInstance().getFactory().create(name).lock();
     }
 
-    public static void unlock(String name) {
-        getInstance().getFactory().create(name).freeLock();
+    public static boolean unlock(String name) {
+        return getInstance().getFactory().create(name).freeLock();
     }
 
 }

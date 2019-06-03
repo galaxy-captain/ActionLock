@@ -12,7 +12,12 @@ public interface GenericLock {
      *
      * @return
      */
-    GenericLock tryLock();
+    boolean tryLock();
+
+    /**
+     * @return
+     */
+    boolean lock();
 
     /**
      * 释放锁
