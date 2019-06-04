@@ -1,6 +1,6 @@
 package me.galaxy.lock.redis;
 
-import me.galaxy.lock.GenericLock;
+import me.galaxy.lock.SimpleLock;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DigestUtils;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -8,7 +8,12 @@ import org.springframework.data.redis.core.script.RedisScript;
 import java.util.Collections;
 import java.util.UUID;
 
-public class RedisLock implements GenericLock {
+/**
+ * @description: 基于Redis中间件的锁实现
+ * @author: Galaxy
+ * @date: 2019-06-02 23:07
+ **/
+public class RedisLock implements SimpleLock {
 
     private RedisTemplate<String, String> redisTemplate;
 
