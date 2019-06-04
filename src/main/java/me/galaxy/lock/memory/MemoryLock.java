@@ -1,18 +1,18 @@
 package me.galaxy.lock.memory;
 
 import me.galaxy.lock.Cache;
-import me.galaxy.lock.GenericLock;
+import me.galaxy.lock.SimpleLock;
 import me.galaxy.lock.helper.DateHelper;
 
 /**
- * @description: TODO
+ * @description: 基于内存的锁的实现
  * @author: Galaxy
  * @date: 2019-06-02 23:02
  **/
-public class MemoryLock implements GenericLock {
+public class MemoryLock implements SimpleLock {
 
     /**
-     *
+     * 内存缓存
      */
     private final Cache<String, Long> cache;
 
