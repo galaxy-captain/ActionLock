@@ -1,7 +1,7 @@
 package me.galaxy.lock;
 
 /**
- * @description: TODO
+ * @description: 产生锁的工厂的类型
  * @author: Galaxy
  * @date: 2019-06-02 23:19
  **/
@@ -14,7 +14,11 @@ public enum FactoryType {
     /**
      *
      */
-    REDIS("redis");
+    REDIS("redis"),
+    /**
+     *
+     */
+    REDISSON("redisson");
 
     private String type;
 

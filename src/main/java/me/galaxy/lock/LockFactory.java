@@ -11,6 +11,6 @@ public interface LockFactory {
      * @param name
      * @return
      */
-    GenericLock create(String name);
+    SimpleLock create(String name);
 
 }

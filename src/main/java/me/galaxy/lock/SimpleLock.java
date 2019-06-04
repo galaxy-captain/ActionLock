@@ -5,7 +5,7 @@ package me.galaxy.lock;
  * @author: Galaxy
  * @date: 2019-06-02 23:02
  **/
-public interface GenericLock {
+public interface SimpleLock {
 
     /**
      * 从缓存中获取锁资源
