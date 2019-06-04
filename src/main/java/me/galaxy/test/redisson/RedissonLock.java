@@ -1,6 +1,6 @@
-package me.galaxy.lock.redisson;
+package me.galaxy.test.redisson;
 
-import me.galaxy.lock.SimpleLock;
+import me.galaxy.test.SimpleLock;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 

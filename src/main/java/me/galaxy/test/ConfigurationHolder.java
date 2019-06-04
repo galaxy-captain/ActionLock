@@ -1,13 +1,10 @@
-package me.galaxy.lock;
+package me.galaxy.test;
 
-import me.galaxy.lock.memory.MemoryLockFactory;
-import me.galaxy.lock.redis.RedisLockFactory;
+import me.galaxy.test.memory.MemoryLockFactory;
+import me.galaxy.test.redis.RedisLockFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.context.ContextLoaderListener;
-
-import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * @description: TODO
@@ -38,7 +35,7 @@ public class ConfigurationHolder {
 
     private LockFactory createRedisLockFactory() {
         RedisTemplate redisTemplate = ContextLoaderListener.getCurrentWebApplicationContext().getBean(RedisTemplate.class);
-        RedisLockFactory redisLockFactory = new RedisLockFactory(redisTemplate);
+        RedisLockFactory redisLockFactory = new RedisLockFactory();
         return redisLockFactory;
     }
 

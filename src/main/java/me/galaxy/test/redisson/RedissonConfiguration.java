@@ -1,11 +1,8 @@
-package me.galaxy.lock.redisson;
+package me.galaxy.test.redisson;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 
 public class RedissonConfiguration {
@@ -16,6 +13,27 @@ public class RedissonConfiguration {
 
     public RedissonConfiguration() {
 
+    }
+
+    public RedissonConfiguration(String address, String database) {
+        this.address = address;
+        this.database = database;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
     }
 
     public RedissonClient redissonClient() {

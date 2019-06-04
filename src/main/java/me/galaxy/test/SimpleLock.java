@@ -1,4 +1,4 @@
-package me.galaxy.lock;
+package me.galaxy.test;
 
 /**
  * @description: 通用锁定义

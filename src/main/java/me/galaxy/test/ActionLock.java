@@ -1,4 +1,4 @@
-package me.galaxy.lock;
+package me.galaxy.test;
 
 /**
  * @description: 锁的门面类
@@ -11,9 +11,14 @@ public class ActionLock {
 
     private LockFactory factory;
 
-    public ActionLock(FactoryType type) {
+    public ActionLock(LockFactory factory) {
+        this.factory = factory;
+        this.type = factory.getFactoryType();
+    }
+
+    public ActionLock(FactoryType type, LockFactory factory) {
         this.type = type;
-        this.factory = FactoryBuilder.build(type);
+        this.factory = factory;
     }
 
     public FactoryType getType() {

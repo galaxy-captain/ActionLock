@@ -1,4 +1,4 @@
-package me.galaxy.lock.helper;
+package me.galaxy.test.helper;
 
 public class DateHelper {
 

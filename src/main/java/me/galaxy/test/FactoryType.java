@@ -1,4 +1,4 @@
-package me.galaxy.lock;
+package me.galaxy.test;
 
 /**
  * @description: 产生锁的工厂的类型

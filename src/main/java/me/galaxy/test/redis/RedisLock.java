@@ -1,6 +1,6 @@
-package me.galaxy.lock.redis;
+package me.galaxy.test.redis;
 
-import me.galaxy.lock.SimpleLock;
+import me.galaxy.test.SimpleLock;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DigestUtils;
 import org.springframework.data.redis.core.script.RedisScript;

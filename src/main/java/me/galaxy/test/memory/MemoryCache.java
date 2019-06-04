@@ -1,8 +1,8 @@
-package me.galaxy.lock.memory;
+package me.galaxy.test.memory;
 
 
-import me.galaxy.lock.Cache;
-import me.galaxy.lock.helper.FormatHelper;
+import me.galaxy.test.Cache;
+import me.galaxy.test.helper.FormatHelper;
 
 import java.util.HashMap;
 import java.util.Map;

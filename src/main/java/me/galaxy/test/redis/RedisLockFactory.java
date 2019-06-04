@@ -1,7 +1,8 @@
-package me.galaxy.lock.redis;
+package me.galaxy.test.redis;
 
-import me.galaxy.lock.SimpleLock;
-import me.galaxy.lock.LockFactory;
+import me.galaxy.test.FactoryType;
+import me.galaxy.test.SimpleLock;
+import me.galaxy.test.LockFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -10,6 +11,8 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @date: 2019-06-02 23:07
  **/
 public class RedisLockFactory implements LockFactory {
+
+    private final FactoryType factoryType = FactoryType.REDIS;
 
     private RedisTemplate<String, String> redisTemplate;
 
@@ -29,5 +32,11 @@ public class RedisLockFactory implements LockFactory {
     public SimpleLock create(String name) {
         return new RedisLock(redisTemplate, name);
     }
+
+    @Override
+    public FactoryType getFactoryType() {
+        return this.factoryType;
+    }
+
 
 }
