@@ -33,20 +33,24 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @Aspect
 public class LockActionAspect {
 
-    public static final Logger logger = LoggerFactory.getLogger(LockActionAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(LockActionAspect.class);
 
     /**
      * 缺省的ActionLockTemplate
      */
     private ActionLockTemplate defaultActionLockTemplate;
 
-    @Autowired
     private LockActionApplicationContextHolder lockActionApplicationContextHolder;
 
     private final PatternReflect patternReflect = new PatternReflect();
 
     public LockActionAspect() {
 
+    }
+
+    @Autowired
+    public void setLockActionApplicationContextHolder(LockActionApplicationContextHolder lockActionApplicationContextHolder) {
+        this.lockActionApplicationContextHolder = lockActionApplicationContextHolder;
     }
 
     @PostConstruct
@@ -71,10 +75,10 @@ public class LockActionAspect {
     /**
      * 核心解析方法
      *
-     * @param joinPoint
-     * @param lockAction
-     * @return
-     * @throws Exception
+     * @param joinPoint 切入点
+     * @param lockAction LockAction注解
+     * @return 被环绕方法的返回值
+     * @throws Exception 获取锁失败的异常
      */
     @Around(value = "cutLockAction(lockAction)", argNames = "joinPoint,lockAction")
     public Object around(ProceedingJoinPoint joinPoint, LockAction lockAction) throws Exception {
@@ -93,8 +97,10 @@ public class LockActionAspect {
             actionLockTemplate = this.defaultActionLockTemplate;
         }
 
-        logger.info(this.toString());
-        logger.info(actionLockTemplate.toString());
+        if (logger.isTraceEnabled()) {
+            logger.trace(this.toString());
+            logger.trace(actionLockTemplate.toString());
+        }
 
         SimpleLock lock = null;
 
@@ -109,8 +115,8 @@ public class LockActionAspect {
 
             String lockName = getLockNameWithAnnotationInMethod(method, methodArgs);
 
-            if (logger.isInfoEnabled()) {
-                logger.info("lock name -> " + lockName);
+            if (logger.isTraceEnabled()) {
+                logger.trace("lock name -> " + lockName);
             }
 
             lock = actionLockTemplate.create(lockName);
@@ -133,9 +139,9 @@ public class LockActionAspect {
     /**
      * LockAction:方法名:参数值
      *
-     * @param method
-     * @param args
-     * @return
+     * @param method 方法的反射类引用
+     * @param args 方法的参数
+     * @return 锁名
      */
     private String getLockNameWithAnnotationInMethod(Method method, Object[] args) {
 
@@ -153,8 +159,8 @@ public class LockActionAspect {
     /**
      * 获取锁名的中段名称
      *
-     * @param method
-     * @return
+     * @param method 方法的反射类引用
+     * @return 锁名的中段
      */
     private String getMiddleNameInLockActionAnnotation(Method method) {
 
@@ -175,9 +181,9 @@ public class LockActionAspect {
     /**
      * 获取锁名的后段名称
      *
-     * @param parameters
-     * @param args
-     * @return
+     * @param parameters 方法参数的反射类引用
+     * @param args 方法参数值
+     * @return 锁名后段
      */
     private String getLastNameInLockNameAnnotation(Parameter[] parameters, Object[] args) {
 
