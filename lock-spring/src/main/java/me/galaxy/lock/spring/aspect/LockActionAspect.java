@@ -43,6 +43,8 @@ public class LockActionAspect {
     @Autowired
     private LockActionApplicationContextHolder lockActionApplicationContextHolder;
 
+    private final PatternReflect patternReflect = new PatternReflect();
+
     public LockActionAspect() {
 
     }
@@ -66,6 +68,14 @@ public class LockActionAspect {
         // None
     }
 
+    /**
+     * 核心解析方法
+     *
+     * @param joinPoint
+     * @param lockAction
+     * @return
+     * @throws Exception
+     */
     @Around(value = "cutLockAction(lockAction)", argNames = "joinPoint,lockAction")
     public Object around(ProceedingJoinPoint joinPoint, LockAction lockAction) throws Exception {
 
@@ -140,6 +150,12 @@ public class LockActionAspect {
         return lockName.toString();
     }
 
+    /**
+     * 获取锁名的中段名称
+     *
+     * @param method
+     * @return
+     */
     private String getMiddleNameInLockActionAnnotation(Method method) {
 
         StringBuilder builder = new StringBuilder();
@@ -156,6 +172,13 @@ public class LockActionAspect {
         return builder.toString();
     }
 
+    /**
+     * 获取锁名的后段名称
+     *
+     * @param parameters
+     * @param args
+     * @return
+     */
     private String getLastNameInLockNameAnnotation(Parameter[] parameters, Object[] args) {
 
         StringBuilder builder = new StringBuilder();
@@ -168,7 +191,7 @@ public class LockActionAspect {
 
             if (lockName == null) continue;
 
-            String valueName = getNameWithPatterInLockName(StringUtils.priority(lockName.value(), lockName.pattern()), args[i]);
+            String valueName = patternReflect.getNameWithPatterInLockName(StringUtils.priority(lockName.value(), lockName.pattern()), args[i]);
 
             builder.append(valueName);
 
@@ -178,91 +201,6 @@ public class LockActionAspect {
         if (!hasLockName) builder.append("None");
 
         return builder.toString();
-    }
-
-    private String getNameWithPatterInLockName(String patterns, Object argument) {
-
-        if ("".equals(patterns)) return argument.toString();
-
-        String[] parts = patterns.split("\\|");
-
-        StringBuilder builder = new StringBuilder();
-
-        for (String part : parts) {
-
-            if ("".equals(part)) continue;
-
-            builder.append(getValueWithPattern(part, argument));
-        }
-
-        return builder.toString();
-    }
-
-    private String getValueWithPattern(String pattern, Object argument) {
-
-        String[] parts = pattern.split("\\.");
-
-        if (parts.length <= 1) return argument.toString();
-
-        try {
-
-            Object obj = argument;
-
-            for (int i = 1; i < parts.length; i++) {
-                obj = getObjectWithPattern(parts[i], obj);
-            }
-
-            return obj.toString();
-
-        } catch (NoSuchFieldException e) {
-            logger.warn("No such pattern matched: " + pattern);
-            return null;
-        } catch (IllegalAccessException e) {
-            logger.warn("No accessible promised to " + pattern);
-            return null;
-        }
-
-    }
-
-    private Object getObjectWithPattern(String pattern, Object obj) throws NoSuchFieldException, IllegalAccessException {
-
-        NameAndKey nk = getNameAndKeyFromPattern(pattern);
-
-        Field field = obj.getClass().getDeclaredField(nk.name);
-        field.setAccessible(true);
-        obj = field.get(obj);
-
-        if (obj instanceof List) {
-            obj = ((List) obj).get(Integer.parseInt(nk.key));
-        } else if (obj instanceof Map) {
-            obj = ((Map) obj).get(nk.key);
-        }
-
-        return obj;
-    }
-
-    private NameAndKey getNameAndKeyFromPattern(String pattern) {
-
-        NameAndKey nk = new NameAndKey();
-
-        int end = pattern.lastIndexOf("]");
-
-        if (end == -1) {
-            nk.name = pattern;
-            nk.key = null;
-        }
-
-        int start = pattern.lastIndexOf("[");
-
-        nk.name = pattern.substring(0, start);
-        nk.key = pattern.substring(start + 1, end);
-
-        return nk;
-    }
-
-    class NameAndKey {
-        String name;
-        String key;
     }
 
 }

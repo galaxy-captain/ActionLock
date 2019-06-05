@@ -91,6 +91,10 @@ public class LockFactoryBean implements FactoryBean<LockFactory>, InitializingBe
 
     private LockFactory buildLockFactory() {
 
+        if (this.lockFactoryType == null) {
+            this.lockFactoryType = LockFactoryType.MEMORY;
+        }
+
         switch (lockFactoryType) {
             case REDISSON:
                 return buildRedissonLockFactory();
@@ -130,7 +134,6 @@ public class LockFactoryBean implements FactoryBean<LockFactory>, InitializingBe
     }
 
     private MemoryLockFactory buildMemoryLockFactory() {
-        this.lockFactoryType = LockFactoryType.MEMORY;
         return null;
     }
 

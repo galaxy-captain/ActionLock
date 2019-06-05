@@ -28,6 +28,16 @@ public class ActionLockTemplate implements InitializingBean {
     }
 
     public SimpleLock create(String name) {
+
+        if (this.actionLock == null) {
+
+            if(this.lockFactory==null){
+                throw new  NullPointerException("You should initialize Variable:lockFactory");
+            }
+
+            this.actionLock = buildActionLock(this.lockFactory);
+        }
+
         return this.actionLock.create(name);
     }
 

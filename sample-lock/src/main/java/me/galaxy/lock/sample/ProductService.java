@@ -1,8 +1,7 @@
 package me.galaxy.lock.sample;
 
-import me.galaxy.lock.SimpleLock;
-import me.galaxy.lock.spring.ActionLockTemplate;
 import me.galaxy.lock.spring.annotation.LockAction;
+import me.galaxy.lock.spring.annotation.LockName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +9,26 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     @Autowired
-    private ActionLockTemplate firstActionLockTemplate;
+    private ProductDAO productDAO;
 
-    public void save() {
-        SimpleLock lock = firstActionLockTemplate.create("testLock");
-        lock.lock(5000L, 500L);
-        lock.unlock();
-    }
+    @LockAction
+    public int saveProduct(@LockName("productDTO.name[name]||ProductDTO.company[0]") ProductDTO productDTO, int price) {
 
-    @LockAction(actionLockTemplate = "secondActionLockTemplate")
-    public void select() {
+        Product product = productDAO.findProductByNameCompany(
+                productDTO.getName().get("name").toString(),
+                productDTO.getCompany().get(0).toString()
+        );
 
+        if (product == null) {
+            productDAO.saveProduct(
+                    productDTO.getName().get("name").toString()
+                    , productDTO.getPrice(),
+                    productDTO.getCompany().get(0).toString()
+            );
+            return 1;
+        }
+
+        return 0;
     }
 
 }

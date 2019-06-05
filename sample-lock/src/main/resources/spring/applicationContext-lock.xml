@@ -27,6 +27,7 @@
         <property name="lockFactory" ref="lockFactoryBean1"/>
     </bean>
 
-<!--    <bean class="me.galaxy.lock.spring.aspect.LockActionAspect"/>-->
+    <!-- (可选) @LockAction启用   -->
+    <bean class="me.galaxy.lock.spring.aspect.LockActionAspect"/>
 
 </beans>

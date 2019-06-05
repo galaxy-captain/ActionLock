@@ -28,3 +28,4 @@ hs_err_pid*
 /lock-spring/target
 /sample-lock/target
 *.iml
+secret.properties

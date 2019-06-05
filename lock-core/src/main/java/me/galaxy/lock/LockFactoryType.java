@@ -18,7 +18,15 @@ public enum LockFactoryType {
     /**
      *
      */
-    REDISSON("redisson");
+    REDISSON("redisson"),
+    /**
+     *
+     */
+    ZOOKEEPER("zookeeper"),
+    /**
+     *
+     */
+    MYSQL("mysql");
 
     private String type;
 
