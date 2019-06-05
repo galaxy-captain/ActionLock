@@ -5,7 +5,7 @@ package me.galaxy.lock;
  * @author: Galaxy
  * @date: 2019-06-02 23:19
  **/
-public enum FactoryType {
+public enum LockFactoryType {
 
     /**
      *
@@ -22,7 +22,7 @@ public enum FactoryType {
 
     private String type;
 
-    FactoryType(String type) {
+    LockFactoryType(String type) {
         this.type = type;
     }
 

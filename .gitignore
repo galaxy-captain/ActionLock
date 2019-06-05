@@ -26,4 +26,5 @@ hs_err_pid*
 /target
 /lock-core/target
 /lock-spring/target
+/sample-lock/target
 *.iml

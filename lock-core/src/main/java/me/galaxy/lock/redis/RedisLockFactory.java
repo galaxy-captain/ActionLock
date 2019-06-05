@@ -1,6 +1,6 @@
 package me.galaxy.lock.redis;
 
-import me.galaxy.lock.FactoryType;
+import me.galaxy.lock.LockFactoryType;
 import me.galaxy.lock.SimpleLock;
 import me.galaxy.lock.LockFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,7 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  **/
 public class RedisLockFactory implements LockFactory {
 
-    private final FactoryType factoryType = FactoryType.REDIS;
+    private final LockFactoryType lockFactoryType = LockFactoryType.REDIS;
 
     private RedisTemplate<String, String> redisTemplate;
 
@@ -34,8 +34,8 @@ public class RedisLockFactory implements LockFactory {
     }
 
     @Override
-    public FactoryType getFactoryType() {
-        return this.factoryType;
+    public LockFactoryType getLockFactoryType() {
+        return this.lockFactoryType;
     }
 
 

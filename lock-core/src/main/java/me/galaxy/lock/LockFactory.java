@@ -18,8 +18,8 @@ public interface LockFactory {
     /**
      * 获取工厂的类型
      *
-     * @return FactoryType
+     * @return LockFactoryType
      */
-    FactoryType getFactoryType();
+    LockFactoryType getLockFactoryType();
 
 }

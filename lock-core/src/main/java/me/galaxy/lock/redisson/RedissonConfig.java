@@ -5,19 +5,22 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
 
-public class RedissonConfiguration {
+public class RedissonConfig {
 
     private String address;
 
     private String database;
 
-    public RedissonConfiguration() {
+    private String password;
+
+    public RedissonConfig() {
 
     }
 
-    public RedissonConfiguration(String address, String database) {
+    public RedissonConfig(String address, String database, String password) {
         this.address = address;
         this.database = database;
+        this.password = password;
     }
 
     public String getAddress() {
@@ -36,10 +39,18 @@ public class RedissonConfiguration {
         this.database = database;
     }
 
-    public RedissonClient redissonClient() {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    RedissonClient redissonClient() {
 
         Config config = new Config();
-        config.useSingleServer().setAddress(address).setDatabase(Integer.parseInt(database));
+        config.useSingleServer().setAddress(address).setDatabase(Integer.parseInt(database)).setPassword(password);
 
         return Redisson.create(config);
     }

@@ -2,7 +2,7 @@ package me.galaxy.lock.memory;
 
 
 import me.galaxy.lock.Cache;
-import me.galaxy.lock.FactoryType;
+import me.galaxy.lock.LockFactoryType;
 import me.galaxy.lock.SimpleLock;
 import me.galaxy.lock.LockFactory;
 
@@ -16,7 +16,7 @@ public class MemoryLockFactory implements LockFactory {
     /**
      * 基于内存的模式
      */
-    private final FactoryType factoryType = FactoryType.MEMORY;
+    private final LockFactoryType lockFactoryType = LockFactoryType.MEMORY;
 
     /**
      * 内存缓存
@@ -46,8 +46,8 @@ public class MemoryLockFactory implements LockFactory {
     }
 
     @Override
-    public FactoryType getFactoryType() {
-        return this.factoryType;
+    public LockFactoryType getLockFactoryType() {
+        return this.lockFactoryType;
     }
 
 }

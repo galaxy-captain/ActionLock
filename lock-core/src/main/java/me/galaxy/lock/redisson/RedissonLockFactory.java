@@ -1,18 +1,18 @@
 package me.galaxy.lock.redisson;
 
-import me.galaxy.lock.FactoryType;
+import me.galaxy.lock.LockFactoryType;
 import me.galaxy.lock.SimpleLock;
 import me.galaxy.lock.LockFactory;
 import org.redisson.api.RedissonClient;
 
 public class RedissonLockFactory implements LockFactory {
 
-    private final FactoryType factoryType = FactoryType.REDISSON;
+    private final LockFactoryType lockFactoryType = LockFactoryType.REDISSON;
 
     private RedissonClient redissonClient;
 
-    public RedissonLockFactory(RedissonConfiguration redissonConfiguration) {
-        this.redissonClient = redissonConfiguration.redissonClient();
+    public RedissonLockFactory(RedissonConfig redissonConfig) {
+        this.redissonClient = redissonConfig.redissonClient();
     }
 
     public RedissonClient getRedissonClient() {
@@ -24,8 +24,8 @@ public class RedissonLockFactory implements LockFactory {
     }
 
     @Override
-    public FactoryType getFactoryType() {
-        return this.factoryType;
+    public LockFactoryType getLockFactoryType() {
+        return this.lockFactoryType;
     }
 
 }

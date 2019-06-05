@@ -7,21 +7,21 @@ package me.galaxy.lock;
  **/
 public class ActionLock {
 
-    private FactoryType type;
+    private LockFactoryType type;
 
     private LockFactory factory;
 
     public ActionLock(LockFactory factory) {
         this.factory = factory;
-        this.type = factory.getFactoryType();
+        this.type = factory.getLockFactoryType();
     }
 
-    public ActionLock(FactoryType type, LockFactory factory) {
+    public ActionLock(LockFactoryType type, LockFactory factory) {
         this.type = type;
         this.factory = factory;
     }
 
-    public FactoryType getType() {
+    public LockFactoryType getType() {
         return type;
     }
 

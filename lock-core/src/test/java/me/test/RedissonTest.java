@@ -3,7 +3,7 @@ package me.test;
 import me.galaxy.lock.ActionLock;
 import me.galaxy.lock.LockFactory;
 import me.galaxy.lock.SimpleLock;
-import me.galaxy.lock.redisson.RedissonConfiguration;
+import me.galaxy.lock.redisson.RedissonConfig;
 import me.galaxy.lock.redisson.RedissonLockFactory;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ public class RedissonTest {
     @Test
     public void testLock() {
 
-        RedissonConfiguration configuration = new RedissonConfiguration();
+        RedissonConfig configuration = new RedissonConfig();
         configuration.setAddress("redis://127.0.0.1:6379");
         configuration.setDatabase("0");
 
